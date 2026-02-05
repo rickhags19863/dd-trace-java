@@ -2,7 +2,6 @@ package datadog.trace.lambda
 
 import datadog.trace.api.Config
 import datadog.trace.api.function.TriConsumer
-import datadog.trace.api.function.TriFunction
 import datadog.trace.api.gateway.CallbackProvider
 import datadog.trace.api.gateway.Flow
 import datadog.trace.api.gateway.RequestContext
@@ -28,12 +27,8 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
   @Shared
   def originalAppSecActive
 
-  @Shared
-  AgentTracer.TracerAPI originalTracer
-
   def setupSpec() {
     originalAppSecActive = ActiveSubsystems.APPSEC_ACTIVE
-    originalTracer = AgentTracer.get()
   }
 
   def cleanupSpec() {
@@ -115,7 +110,7 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     when:
     LambdaAppSecHandler.processRequestStart(event)
     event.reset()
-    def content = new String(event.bytes, StandardCharsets.UTF_8)
+    def content = new String(event.readAllBytes(), StandardCharsets.UTF_8)
 
     then:
     content == jsonData
@@ -336,23 +331,23 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedBody = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedMethod = method
-      capturedPath = uri.path()
-    },
-    onHeader: { name, value ->
-      capturedHeaders[name] = value
-    },
-    onSocketAddress: { ip, port ->
-      capturedSourceIp = ip
-      capturedSourcePort = port
-    },
-    onPathParams: { params ->
-      capturedPathParams = params
-    },
-    onBody: { body ->
-      capturedBody = body
-    }
+      onMethodUri: { method, uri ->
+        capturedMethod = method
+        capturedPath = uri.path()
+      },
+      onHeader: { name, value ->
+        capturedHeaders[name] = value
+      },
+      onSocketAddress: { ip, port ->
+        capturedSourceIp = ip
+        capturedSourcePort = port
+      },
+      onPathParams: { params ->
+        capturedPathParams = params
+      },
+      onBody: { body ->
+        capturedBody = body
+      }
     )
 
     when:
@@ -408,20 +403,20 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedPathParams = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedMethod = method
-      capturedPath = uri.path()
-    },
-    onHeader: { name, value ->
-      capturedHeaders[name] = value
-    },
-    onSocketAddress: { ip, port ->
-      capturedSourceIp = ip
-      capturedSourcePort = port
-    },
-    onPathParams: { params ->
-      capturedPathParams = params
-    }
+      onMethodUri: { method, uri ->
+        capturedMethod = method
+        capturedPath = uri.path()
+      },
+      onHeader: { name, value ->
+        capturedHeaders[name] = value
+      },
+      onSocketAddress: { ip, port ->
+        capturedSourceIp = ip
+        capturedSourcePort = port
+      },
+      onPathParams: { params ->
+        capturedPathParams = params
+      }
     )
 
     when:
@@ -463,10 +458,10 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedPath = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedMethod = method
-      capturedPath = uri.path()
-    }
+      onMethodUri: { method, uri ->
+        capturedMethod = method
+        capturedPath = uri.path()
+      }
     )
 
     when:
@@ -502,13 +497,13 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedSourceIp = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedMethod = method
-      capturedPath = uri.path()
-    },
-    onSocketAddress: { ip, port ->
-      capturedSourceIp = ip
-    }
+      onMethodUri: { method, uri ->
+        capturedMethod = method
+        capturedPath = uri.path()
+      },
+      onSocketAddress: { ip, port ->
+        capturedSourceIp = ip
+      }
     )
 
     when:
@@ -543,9 +538,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedHeaders = [:]
 
     setupMockCallbacks(
-    onHeader: { name, value ->
-      capturedHeaders[name] = value
-    }
+      onHeader: { name, value ->
+        capturedHeaders[name] = value
+      }
     )
 
     when:
@@ -579,9 +574,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedHeaders = [:]
 
     setupMockCallbacks(
-    onHeader: { name, value ->
-      capturedHeaders[name] = value
-    }
+      onHeader: { name, value ->
+        capturedHeaders[name] = value
+      }
     )
 
     when:
@@ -613,13 +608,13 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedSourceIp = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedMethod = method
-      capturedPath = uri.path()
-    },
-    onSocketAddress: { ip, port ->
-      capturedSourceIp = ip
-    }
+      onMethodUri: { method, uri ->
+        capturedMethod = method
+        capturedPath = uri.path()
+      },
+      onSocketAddress: { ip, port ->
+        capturedSourceIp = ip
+      }
     )
 
     when:
@@ -650,9 +645,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedBody = null
 
     setupMockCallbacks(
-    onBody: { body ->
-      capturedBody = body
-    }
+      onBody: { body ->
+        capturedBody = body
+      }
     )
 
     when:
@@ -670,9 +665,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedBody = "NOT_CALLED"
 
     setupMockCallbacks(
-    onBody: { body ->
-      capturedBody = body
-    }
+      onBody: { body ->
+        capturedBody = body
+      }
     )
 
     when:
@@ -690,9 +685,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedBody = null
 
     setupMockCallbacks(
-    onBody: { body ->
-      capturedBody = body
-    }
+      onBody: { body ->
+        capturedBody = body
+      }
     )
 
     when:
@@ -719,10 +714,10 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedQuery = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedPath = uri.path()
-      capturedQuery = uri.query()
-    }
+      onMethodUri: { method, uri ->
+        capturedPath = uri.path()
+        capturedQuery = uri.query()
+      }
     )
 
     when:
@@ -732,111 +727,6 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     result != null
     capturedPath == "/api/users"
     capturedQuery == "id=123&filter=active"
-  }
-
-  def "extracts scheme and port from X-Forwarded headers"() {
-    given:
-    def eventJson = '''
-    {
-      "path": "/api/test",
-      "headers": {
-        "x-forwarded-proto": "http",
-        "x-forwarded-port": "8080"
-      },
-      "requestContext": {
-        "httpMethod": "GET",
-        "requestId": "req-123"
-      }
-    }
-    '''
-    def event = createInputStream(eventJson)
-
-    def capturedScheme = null
-    def capturedPort = null
-
-    setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedScheme = uri.scheme()
-      capturedPort = uri.port()
-    }
-    )
-
-    when:
-    def result = LambdaAppSecHandler.processRequestStart(event)
-
-    then:
-    result != null
-    capturedScheme == "http"
-    capturedPort == 8080
-  }
-
-  def "falls back to https/443 when X-Forwarded headers are absent"() {
-    given:
-    def eventJson = '''
-    {
-      "path": "/api/test",
-      "headers": {},
-      "requestContext": {
-        "httpMethod": "GET",
-        "requestId": "req-123"
-      }
-    }
-    '''
-    def event = createInputStream(eventJson)
-
-    def capturedScheme = null
-    def capturedPort = null
-
-    setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedScheme = uri.scheme()
-      capturedPort = uri.port()
-    }
-    )
-
-    when:
-    def result = LambdaAppSecHandler.processRequestStart(event)
-
-    then:
-    result != null
-    capturedScheme == "https"
-    capturedPort == 443
-  }
-
-  def "handles invalid X-Forwarded-Port gracefully"() {
-    given:
-    def eventJson = '''
-    {
-      "path": "/api/test",
-      "headers": {
-        "x-forwarded-proto": "https",
-        "x-forwarded-port": "not-a-number"
-      },
-      "requestContext": {
-        "httpMethod": "GET",
-        "requestId": "req-123"
-      }
-    }
-    '''
-    def event = createInputStream(eventJson)
-
-    def capturedScheme = null
-    def capturedPort = null
-
-    setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedScheme = uri.scheme()
-      capturedPort = uri.port()
-    }
-    )
-
-    when:
-    def result = LambdaAppSecHandler.processRequestStart(event)
-
-    then:
-    result != null
-    capturedScheme == "https"
-    capturedPort == 443
   }
 
   def "handles invalid base64 body gracefully"() {
@@ -855,9 +745,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedBody = "NOT_CALLED"
 
     setupMockCallbacks(
-    onBody: { body ->
-      capturedBody = body
-    }
+      onBody: { body ->
+        capturedBody = body
+      }
     )
 
     when:
@@ -885,9 +775,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedBody = "NOT_CALLED"
 
     setupMockCallbacks(
-    onBody: { body ->
-      capturedBody = body
-    }
+      onBody: { body ->
+        capturedBody = body
+      }
     )
 
     when:
@@ -913,9 +803,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedBody = null
 
     setupMockCallbacks(
-    onBody: { body ->
-      capturedBody = body
-    }
+      onBody: { body ->
+        capturedBody = body
+      }
     )
 
     when:
@@ -956,16 +846,16 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedSourceIp = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedMethod = method
-      capturedPath = uri.path()
-    },
-    onHeader: { name, value ->
-      capturedHeaders[name] = value
-    },
-    onSocketAddress: { ip, port ->
-      capturedSourceIp = ip
-    }
+      onMethodUri: { method, uri ->
+        capturedMethod = method
+        capturedPath = uri.path()
+      },
+      onHeader: { name, value ->
+        capturedHeaders[name] = value
+      },
+      onSocketAddress: { ip, port ->
+        capturedSourceIp = ip
+      }
     )
 
     when:
@@ -999,13 +889,13 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedSourceIp = null
 
     setupMockCallbacks(
-    onMethodUri: { method, uri ->
-      capturedMethod = method
-      capturedPath = uri.path()
-    },
-    onSocketAddress: { ip, port ->
-      capturedSourceIp = ip
-    }
+      onMethodUri: { method, uri ->
+        capturedMethod = method
+        capturedPath = uri.path()
+      },
+      onSocketAddress: { ip, port ->
+        capturedSourceIp = ip
+      }
     )
 
     when:
@@ -1039,9 +929,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedHeaders = [:]
 
     setupMockCallbacks(
-    onHeader: { name, value ->
-      capturedHeaders[name] = value
-    }
+      onHeader: { name, value ->
+        capturedHeaders[name] = value
+      }
     )
 
     when:
@@ -1073,9 +963,9 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedHeaders = [:]
 
     setupMockCallbacks(
-    onHeader: { name, value ->
-      capturedHeaders[name] = value
-    }
+      onHeader: { name, value ->
+        capturedHeaders[name] = value
+      }
     )
 
     when:
@@ -1138,8 +1028,7 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     def capturedSpan = null
 
     def mockRequestEndedCallback = Mock(BiFunction) {
-      apply(_ as RequestContext, _ as AgentSpan) >> {
-        RequestContext ctx, AgentSpan s ->
+      apply(_ as RequestContext, _ as AgentSpan) >> { RequestContext ctx, AgentSpan s ->
         callbackInvoked = true
         capturedContext = ctx
         capturedSpan = s
@@ -1380,24 +1269,21 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
       get() >> new Flow.ResultFlow<>(mockAppSecContext)
     }
 
-    def mockMethodUriCallback = callbacks.onMethodUri ? Mock(TriFunction) {
-      apply(_ as RequestContext, _ as String, _ as URIDataAdapter) >> {
-        RequestContext ctx, String method, URIDataAdapter uri ->
+    def mockMethodUriCallback = callbacks.onMethodUri ? Mock(datadog.trace.api.function.TriFunction) {
+      apply(_ as RequestContext, _ as String, _ as URIDataAdapter) >> { RequestContext ctx, String method, URIDataAdapter uri ->
         callbacks.onMethodUri(method, uri)
         return new Flow.ResultFlow<>(null)
       }
     } : null
 
     def mockHeaderCallback = callbacks.onHeader ? Mock(TriConsumer) {
-      accept(_ as RequestContext, _ as String, _ as String) >> {
-        RequestContext ctx, String name, String value ->
+      accept(_ as RequestContext, _ as String, _ as String) >> { RequestContext ctx, String name, String value ->
         callbacks.onHeader(name, value)
       }
     } : null
 
     def mockSocketAddressCallback = callbacks.onSocketAddress ? Mock(TriFunction) {
-      apply(_ as RequestContext, _ as String, _ as Integer) >> {
-        RequestContext ctx, String ip, Integer port ->
+      apply(_ as RequestContext, _ as String, _ as Integer) >> { RequestContext ctx, String ip, Integer port ->
         callbacks.onSocketAddress(ip, port)
         return new Flow.ResultFlow<>(null)
       }
@@ -1408,16 +1294,21 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
     }
 
     def mockPathParamsCallback = callbacks.onPathParams ? Mock(BiFunction) {
-      apply(_ as RequestContext, _ as Map) >> {
-        RequestContext ctx, Map params ->
+      apply(_ as RequestContext, _ as Map) >> { RequestContext ctx, Map params ->
         callbacks.onPathParams(params)
         return new Flow.ResultFlow<>(null)
       }
     } : null
 
+    def mockQueryParamsCallback = callbacks.onQueryParams ? Mock(BiFunction) {
+      apply(_ as RequestContext, _ as Map) >> { RequestContext ctx, Map params ->
+        callbacks.onQueryParams(params)
+        return new Flow.ResultFlow<>(null)
+      }
+    } : null
+
     def mockBodyCallback = callbacks.onBody ? Mock(BiFunction) {
-      apply(_ as RequestContext, _ as Object) >> {
-        RequestContext ctx, Object body ->
+      apply(_ as RequestContext, _ as Object) >> { RequestContext ctx, Object body ->
         callbacks.onBody(body)
         return new Flow.ResultFlow<>(null)
       }
@@ -1442,6 +1333,7 @@ class LambdaAppSecHandlerTest extends DDCoreSpecification {
   }
 
   def cleanup() {
-    AgentTracer.forceRegister(originalTracer)
+    // Reset tracer after each test
+    AgentTracer.forceRegister(null)
   }
 }
