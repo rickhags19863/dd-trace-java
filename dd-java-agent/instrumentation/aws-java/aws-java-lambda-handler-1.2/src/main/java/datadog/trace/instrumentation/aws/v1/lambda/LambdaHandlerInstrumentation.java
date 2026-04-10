@@ -125,7 +125,7 @@ public class LambdaHandlerInstrumentation extends InstrumenterModule.Tracing
         }
         String lambdaRequestId = awsContext.getAwsRequestId();
 
-        AgentTracer.get().notifyAppSecEnd(span);
+        AgentTracer.get().notifyAppSecEnd(span, result);
         span.finish();
         AgentTracer.get().notifyExtensionEnd(span, result, null != throwable, lambdaRequestId);
       } finally {
