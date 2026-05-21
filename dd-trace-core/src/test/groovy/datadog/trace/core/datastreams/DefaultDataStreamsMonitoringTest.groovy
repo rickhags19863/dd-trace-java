@@ -1037,7 +1037,7 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     when:
     def dataStreams = new DefaultDataStreamsMonitoring(sink, features, timeSource, { traceConfig }, payloadWriter, DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.start()
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"])
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1079,7 +1079,7 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     when:
     def dataStreams = new DefaultDataStreamsMonitoring(sink, features, timeSource, { traceConfig }, payloadWriter, DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.start()
-    dataStreams.reportKafkaConfig("kafka_consumer", "", "test-group", ["bootstrap.servers": "localhost:9092", "group.id": "test-group", "auto.offset.reset": "earliest"])
+    dataStreams.reportKafkaConfig("kafka_consumer", "", "test-group", ["bootstrap.servers": "localhost:9092", "group.id": "test-group", "auto.offset.reset": "earliest"], "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1124,8 +1124,8 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     dataStreams.start()
     def config1 = ["bootstrap.servers": "localhost:9092", "acks": "all"]
     def config2 = ["bootstrap.servers": "localhost:9092", "acks": "all"]
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", config1)
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", config2)
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", config1, "connected")
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", config2, "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1166,7 +1166,7 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     def dataStreams = new DefaultDataStreamsMonitoring(sink, features, timeSource, { traceConfig }, payloadWriter, DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.start()
     def config = ["bootstrap.servers": "localhost:9092", "acks": "all"]
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", config)
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", config, "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1183,7 +1183,7 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
 
     when: "reporting the same config again in a new bucket"
     payloadWriter.buckets.clear()
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", config)
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", config, "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1225,8 +1225,8 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     when: "reporting producer and consumer configs"
     def dataStreams = new DefaultDataStreamsMonitoring(sink, features, timeSource, { traceConfig }, payloadWriter, DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.start()
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"])
-    dataStreams.reportKafkaConfig("kafka_consumer", "", "my-group", ["bootstrap.servers": "localhost:9092", "group.id": "my-group"])
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], "connected")
+    dataStreams.reportKafkaConfig("kafka_consumer", "", "my-group", ["bootstrap.servers": "localhost:9092", "group.id": "my-group"], "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1273,8 +1273,8 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     when: "reporting two producer configs with different settings"
     def dataStreams = new DefaultDataStreamsMonitoring(sink, features, timeSource, { traceConfig }, payloadWriter, DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.start()
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"])
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9093", "acks": "1"])
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], "connected")
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9093", "acks": "1"], "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1313,7 +1313,7 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     dataStreams.start()
     def tg = DataStreamsTags.create("testType", null, "testTopic", "testGroup", null)
     dataStreams.add(new StatsPoint(tg, 1, 2, 3, timeSource.currentTimeNanos, 0, 0, 0, null))
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092"])
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092"], "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1362,7 +1362,7 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     when:
     def dataStreams = new DefaultDataStreamsMonitoring(sink, features, timeSource, { traceConfig }, payloadWriter, DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.start()
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092"])
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092"], "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.report()
 
@@ -1401,7 +1401,7 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
     when:
     def dataStreams = new DefaultDataStreamsMonitoring(sink, features, timeSource, { traceConfig }, payloadWriter, DEFAULT_BUCKET_DURATION_NANOS)
     dataStreams.start()
-    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092"])
+    dataStreams.reportKafkaConfig("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092"], "connected")
     timeSource.advance(DEFAULT_BUCKET_DURATION_NANOS - 100l)
     dataStreams.close()
 
@@ -1426,11 +1426,11 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
 
   def "KafkaConfigReport equals and hashCode work correctly"() {
     given:
-    def config1 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], 1000L, null)
-    def config2 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], 2000L, null)
-    def config3 = new KafkaConfigReport("kafka_consumer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], 1000L, null)
-    def config4 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9093"], 1000L, null)
-    def config5 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], 1000L, "other-service")
+    def config1 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], "connected", 1000L, null)
+    def config2 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], "connected", 2000L, null)
+    def config3 = new KafkaConfigReport("kafka_consumer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], "connected", 1000L, null)
+    def config4 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9093"], "connected", 1000L, null)
+    def config5 = new KafkaConfigReport("kafka_producer", "", "", ["bootstrap.servers": "localhost:9092", "acks": "all"], "connected", 1000L, "other-service")
 
     expect:
     // Reflexive
@@ -1465,8 +1465,8 @@ class DefaultDataStreamsMonitoringTest extends DDCoreSpecification {
   def "StatsBucket stores Kafka configs"() {
     given:
     def bucket = new StatsBucket(1000L, 10000L)
-    def config1 = new KafkaConfigReport("kafka_producer", "", "", ["acks": "all"], 1000L, null)
-    def config2 = new KafkaConfigReport("kafka_consumer", "", "test", ["group.id": "test"], 2000L, null)
+    def config1 = new KafkaConfigReport("kafka_producer", "", "", ["acks": "all"], "connected", 1000L, null)
+    def config2 = new KafkaConfigReport("kafka_consumer", "", "test", ["group.id": "test"], "connected", 2000L, null)
 
     when:
     bucket.addKafkaConfig(config1)
