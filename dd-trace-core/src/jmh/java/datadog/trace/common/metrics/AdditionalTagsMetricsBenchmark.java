@@ -91,11 +91,9 @@ public class AdditionalTagsMetricsBenchmark {
   public void tearDown() {
     aggregator.close();
     System.err.println("[ADDITIONAL-TAGS] counters (across all threads, single fork):");
-    System.err.println("  onStatsInboxFull         = " + health.inboxFull);
-    System.err.println("  onStatsAggregateDropped  = " + health.aggregateDropped);
-    System.err.println("  traceComputedCalls       = " + health.traceComputedCalls);
-    System.err.println("  totalSpansCounted        = " + health.totalSpansCounted);
-    System.err.println("  tagCardinalityBlocked    = " + health.tagCardinalityBlocked);
+    System.err.println("  onStatsInboxFull         = " + health.inboxFull.sum());
+    System.err.println("  onStatsAggregateDropped  = " + health.aggregateDropped.sum());
+    System.err.println("  tagCardinalityBlocked    = " + health.tagCardinalityBlocked.sum());
   }
 
   @Benchmark
