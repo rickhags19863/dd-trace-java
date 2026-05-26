@@ -74,7 +74,8 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    // PREFER_PROJECT allows local build overrides, which is handy for local development
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         mavenCentral()
         mavenLocal()
