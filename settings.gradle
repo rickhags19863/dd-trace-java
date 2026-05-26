@@ -64,6 +64,9 @@ include ':utils:time-utils'
 // Benchmark modules
 include ':benchmarks'
 
+// My personal sandbox module for experimenting with custom instrumentation
+include ':sandbox'
+
 // Apply common build configuration
 pluginManagement {
     repositories {
@@ -74,10 +77,4 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    // PREFER_PROJECT allows local build overrides, which is handy for local development
-    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-}
+    // PREFER_PROJECT allows local build overrides, which is hand
