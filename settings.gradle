@@ -1,0 +1,82 @@
+rootProject.name = 'dd-trace-java'
+
+// Core modules
+include ':dd-trace-api'
+include ':dd-trace-core'
+include ':dd-trace-ot'
+
+// Agent modules
+include ':dd-java-agent'
+include ':dd-java-agent:agent-bootstrap'
+include ':dd-java-agent:agent-tooling'
+include ':dd-java-agent:agent-logging'
+include ':dd-java-agent:agent-profiling'
+
+// Instrumentation modules
+include ':dd-java-agent:instrumentation'
+include ':dd-java-agent:instrumentation:java-concurrent'
+include ':dd-java-agent:instrumentation:http-url-connection'
+include ':dd-java-agent:instrumentation:servlet'
+include ':dd-java-agent:instrumentation:servlet:request-3'
+include ':dd-java-agent:instrumentation:servlet:request-5'
+include ':dd-java-agent:instrumentation:spring-webmvc'
+include ':dd-java-agent:instrumentation:spring-webmvc-3.1'
+include ':dd-java-agent:instrumentation:spring-webmvc-5.3'
+include ':dd-java-agent:instrumentation:spring-webflux'
+include ':dd-java-agent:instrumentation:spring-webflux-5'
+include ':dd-java-agent:instrumentation:netty'
+include ':dd-java-agent:instrumentation:netty-4.0'
+include ':dd-java-agent:instrumentation:netty-4.1'
+include ':dd-java-agent:instrumentation:grpc'
+include ':dd-java-agent:instrumentation:jdbc'
+include ':dd-java-agent:instrumentation:mongo'
+include ':dd-java-agent:instrumentation:redis'
+include ':dd-java-agent:instrumentation:elasticsearch'
+include ':dd-java-agent:instrumentation:kafka-clients'
+include ':dd-java-agent:instrumentation:kafka-clients-0.11'
+include ':dd-java-agent:instrumentation:kafka-clients-2.6'
+include ':dd-java-agent:instrumentation:rabbitmq-amqp'
+include ':dd-java-agent:instrumentation:aws-sdk'
+include ':dd-java-agent:instrumentation:aws-sdk-1.11'
+include ':dd-java-agent:instrumentation:aws-sdk-2.2'
+include ':dd-java-agent:instrumentation:log4j'
+include ':dd-java-agent:instrumentation:log4j-1'
+include ':dd-java-agent:instrumentation:log4j-2'
+include ':dd-java-agent:instrumentation:logback'
+include ':dd-java-agent:instrumentation:slf4j'
+include ':dd-java-agent:instrumentation:okhttp'
+include ':dd-java-agent:instrumentation:okhttp-3'
+include ':dd-java-agent:instrumentation:apache-httpclient'
+include ':dd-java-agent:instrumentation:apache-httpclient-4'
+include ':dd-java-agent:instrumentation:apache-httpclient-5'
+include ':dd-java-agent:instrumentation:hystrix'
+include ':dd-java-agent:instrumentation:opentelemetry'
+include ':dd-java-agent:instrumentation:opentelemetry-1'
+include ':dd-java-agent:instrumentation:opentracing'
+include ':dd-java-agent:instrumentation:opentracing-0.32'
+include ':dd-java-agent:instrumentation:opentracing-0.33'
+
+// Testing utilities
+include ':utils:test-utils'
+include ':utils:thread-utils'
+include ':utils:time-utils'
+
+// Benchmark modules
+include ':benchmarks'
+
+// Apply common build configuration
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+}
